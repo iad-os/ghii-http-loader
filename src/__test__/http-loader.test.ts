@@ -15,12 +15,18 @@ describe('Ghii Http Loader', () => {
       expect(typeof httpCallLoader).toBe('function');
     });
 
+    it('attempt to make a call that fails silently', async () => {
+      mockedAxios.get.mockRejectedValue({ response: { status: 404 }, message: 'test' });
+      await httpLoader('http://localhost:3000/.wellknown')();
+    });
+
     it('attempt to make a call that fails', async () => {
-      mockedAxios.get.mockRejectedValue(new Error());
+      mockedAxios.get.mockRejectedValue({ response: { status: 404 }, message: 'test' });
       try {
-        const test = await httpLoader('http://localhost:3000/.wellknown')();
+        await httpLoader('http://localhost:3000/.wellknown', { throwOnError: true })();
       } catch (err) {
         expect(err).toBeDefined();
+        expect(err.message).toContain('test');
       }
     });
 
