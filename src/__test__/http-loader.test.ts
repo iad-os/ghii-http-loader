@@ -30,6 +30,24 @@ describe('Ghii Http Loader', () => {
       }
     });
 
+    it('attempt to make a call that fails 2', async () => {
+      mockedAxios.get.mockRejectedValue(undefined);
+      try {
+        await httpLoader('http://localhost:3000/.wellknown', { throwOnError: true })();
+      } catch (err) {
+        expect(err).toBeDefined();
+        expect(err.message).toContain('GET');
+      }
+    });
+    it('attempt to make a call that fails 3', async () => {
+      mockedAxios.get.mockRejectedValue({ message: 'test' });
+      try {
+        await httpLoader('http://localhost:3000/.wellknown', { throwOnError: true })();
+      } catch (err) {
+        expect(err).toBeDefined();
+        expect(err.message).toContain('test');
+      }
+    });
     it('attempt to call api resolved', async () => {
       mockedAxios.get.mockResolvedValue({ data: { test: 'value' } });
       const test = await httpLoader('http://localhost:3000/.wellknown')();
