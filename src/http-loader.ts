@@ -18,7 +18,7 @@ export default function httpLoader(
       const { data } = await axios.get(urlEndpoint, { headers });
       return data as { [key: string]: unknown };
     } catch (err) {
-      const msg = `${err.response.status} GET ${urlEndpoint} : ${err.message}`;
+      const msg = `${err?.response?.status} GET ${urlEndpoint} : ${err.message}`;
       logger(err, msg);
       if (throwOnError) throw new Error(msg);
       return {};
