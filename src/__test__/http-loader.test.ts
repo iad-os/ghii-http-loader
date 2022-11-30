@@ -40,7 +40,7 @@ describe('Ghii Http Loader', () => {
       }
     });
     it('attempt to make a call that fails 3', async () => {
-      mockedAxios.get.mockRejectedValue({message:'test'});
+      mockedAxios.get.mockRejectedValue({ message: 'test' });
       try {
         await httpLoader('http://localhost:3000/.wellknown', { throwOnError: true })();
       } catch (err) {
