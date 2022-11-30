@@ -1,5 +1,5 @@
 import { Loader } from '@ghii/ghii';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 
 export default function httpLoader(
   urlEndpoint: string,
@@ -18,12 +18,16 @@ export default function httpLoader(
       const { data } = await axios.get(urlEndpoint, { headers });
       return data as { [key: string]: unknown };
     } catch (err) {
-      const msg = `${err?.response?.status || ''} GET ${urlEndpoint} : ${err?.message}`;
+      const axiosErr = err as AxiosError
+      const msg = `${axiosErr?.response?.status || ''} GET ${urlEndpoint} : ${axiosErr?.message}`;
       logger(err, msg);
+
       if (throwOnError) throw new Error(msg);
       return {};
     }
   };
 }
+
+
 
 export { httpLoader };

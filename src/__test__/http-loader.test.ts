@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import httpLoader from '../http-loader';
 
 jest.mock('axios');
@@ -26,7 +26,7 @@ describe('Ghii Http Loader', () => {
         await httpLoader('http://localhost:3000/.wellknown', { throwOnError: true })();
       } catch (err) {
         expect(err).toBeDefined();
-        expect(err.message).toContain('test');
+        expect((err as AxiosError).message).toContain('test');
       }
     });
 
@@ -36,16 +36,16 @@ describe('Ghii Http Loader', () => {
         await httpLoader('http://localhost:3000/.wellknown', { throwOnError: true })();
       } catch (err) {
         expect(err).toBeDefined();
-        expect(err.message).toContain('GET');
+        expect((err as AxiosError).message).toContain('GET');
       }
     });
     it('attempt to make a call that fails 3', async () => {
-      mockedAxios.get.mockRejectedValue({ message: 'test' });
+      mockedAxios.get.mockRejectedValue({message:'test'});
       try {
         await httpLoader('http://localhost:3000/.wellknown', { throwOnError: true })();
       } catch (err) {
         expect(err).toBeDefined();
-        expect(err.message).toContain('test');
+        expect((err as AxiosError).message).toContain('test');
       }
     });
     it('attempt to call api resolved', async () => {
