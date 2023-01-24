@@ -8,9 +8,9 @@ export default function httpLoader(
     throwOnError = false,
     logger = (err, message) => console.log(message, err),
   }: {
-    headers?: any;
+    headers?: Record<string, string>;
     throwOnError?: boolean;
-    logger?: (err: any, message: string) => void;
+    logger?: (err: unknown, message: string) => void;
   } = {}
 ): Loader {
   return async function () {
