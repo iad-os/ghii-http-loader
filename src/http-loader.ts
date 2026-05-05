@@ -34,10 +34,6 @@ function getErrorMessage(err: unknown, urlEndpoint: string): string {
 }
 
 function createHeaders(headers?: HeadersInit): Headers {
-  if (typeof Headers === 'undefined') {
-    throw new Error('Native fetch Headers API is not available. Please use Node.js 18 or newer.');
-  }
-
   const requestHeaders = new Headers(headers);
 
   if (!requestHeaders.has('Accept')) {
@@ -53,10 +49,6 @@ export default function httpLoader(
 ): Loader {
   return async function () {
     try {
-      if (typeof fetch === 'undefined') {
-        throw new Error('Native fetch API is not available. Please use Node.js 18 or newer.');
-      }
-
       const response = await fetch(urlEndpoint, { headers: createHeaders(headers) });
 
       if (!response.ok) {
