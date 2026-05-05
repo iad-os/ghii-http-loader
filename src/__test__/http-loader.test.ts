@@ -1,12 +1,20 @@
-import { beforeEach, describe, expect, it, jest } from '@jest/globals';
+import { afterEach, beforeEach, describe, expect, it, jest } from '@jest/globals';
 import httpLoader from '../http-loader.js';
 
 const fetchMock = jest.fn<typeof fetch>();
+const originalFetch = global.fetch;
+const originalHeaders = global.Headers;
 
 describe('Ghii Http Loader', () => {
   beforeEach(() => {
     fetchMock.mockReset();
+    global.Headers = originalHeaders;
     global.fetch = fetchMock;
+  });
+
+  afterEach(() => {
+    global.Headers = originalHeaders;
+    global.fetch = originalFetch;
   });
 
   it('export a function', () => {
@@ -94,6 +102,22 @@ describe('Ghii Http Loader', () => {
 
       expect(test).toStrictEqual({});
       expect(logger).toHaveBeenCalledWith(expect.any(Error), expect.stringContaining('JSON object'));
+    });
+
+    it('fails clearly when native fetch is unavailable', async () => {
+      global.fetch = undefined as unknown as typeof fetch;
+
+      await expect(httpLoader('http://localhost:3000/.wellknown', { throwOnError: true })()).rejects.toThrow(
+        'Native fetch API is not available'
+      );
+    });
+
+    it('fails clearly when native Headers is unavailable', async () => {
+      global.Headers = undefined as unknown as typeof Headers;
+
+      await expect(httpLoader('http://localhost:3000/.wellknown', { throwOnError: true })()).rejects.toThrow(
+        'Native fetch Headers API is not available'
+      );
     });
   });
 });
