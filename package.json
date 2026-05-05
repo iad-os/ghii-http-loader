@@ -1,6 +1,6 @@
 {
-  "name": "@ghii/http-loader-es",
-  "version": "0.0.1",
+  "name": "@ghii/http-loader",
+  "version": "1.0.0",
   "description": "A Funny http loader for ghii configuration manager ",
   "maintainers": [
     {
