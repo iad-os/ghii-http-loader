@@ -5,7 +5,7 @@ Http loader is a [ghii](https://github.com/iad-os/ghii) loader. It is used to lo
 ## How to install:
 
 ```sh
-npm install @ghii/http-loader
+npm install @ghii/http-loader-esm
 ```
 
 Configuration in yaml:
@@ -34,7 +34,7 @@ in JSON:
 
 ```TypeScript
 import ghii from "@ghii/ghii";
-import httpLoader from "@ghii/http-loader";
+import httpLoader from "@ghii/http-loader-esm";
 
 const options = ghii((T) =>
   T.Object({
